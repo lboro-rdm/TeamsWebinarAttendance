@@ -1,0 +1,27 @@
+---
+title: "Midlands Innovation Open Research Week 2025: Attendance Report"
+output:
+  word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+
+# This sources your processing script (e.g. email_cleaning.R)
+source("email_cleaning.R")
+```
+
+```{r}
+
+kable(summary_with_averages, caption = "Summary of Registered and Attended Participants with Averages")
+
+kable(unique_counts, caption = "Unique Registrations and Attendees")
+
+kable(attendance_by_institution, caption = "Registered and Attended Participants by Email Domain")
+
+kable(combined_summary, caption = "Registrants and Attendees from UK Institutions")
+
+kable(non_acuk_list, caption = "List of Non-UK Institution Domains")
+```
