@@ -1,2 +1,2 @@
 # TeamsWebinarAttendance
-A script that analysis attendance sheets from Teams webinars
+A script that analyses attendance sheets from Teams webinars
