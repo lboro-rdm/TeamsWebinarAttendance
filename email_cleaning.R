@@ -111,7 +111,11 @@ attendance_by_institution <- attendance_all %>%
     attendances = n_distinct(Email[is_attendee]),
     .groups = "drop"
   ) %>%
-  arrange(desc(registrations))
+  arrange(desc(registrations)) %>%
+  mutate(
+    registrations = ifelse(registrations <= 5, "<6", as.character(registrations)),
+    attendances = ifelse(attendances <= 5, "<6", as.character(attendances))
+  )
 
 # Print the table
 kable(attendance_by_institution, caption = "Registered and Attended Partipants by Email Domain")
@@ -150,3 +154,4 @@ non_acuk_list <- non_acuk_registrants %>%
   rename(`Non-UK Institution Domains` = institution)
 
 kable(non_acuk_list, caption = "List of Non-UK Institution Domains")
+
