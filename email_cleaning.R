@@ -8,7 +8,7 @@ attendance_all <- tibble()
 
 for (file_path in csv_files) {
   
-    summary_data <- read_csv(
+  summary_data <- read_csv(
     file_path,
     col_names = FALSE,
     n_max = 10,
