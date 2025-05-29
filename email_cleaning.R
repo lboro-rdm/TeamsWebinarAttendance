@@ -41,12 +41,12 @@ for (file_path in csv_files) {
   attendance_block <- attendance_block[-1, ]
   
   clean_attendance <- attendance_block %>%
-    select(`Email`, `Registration Email`, `Role`) %>%
+    select(`Name`, `Email`, `Registration Email`, `Role`) %>%
     mutate(
       Email = coalesce(`Registration Email`, `Email`),  
       session = str_remove(basename(file_path), "\\.csv$")
     ) %>%
-    select(session, Email, Role)
+    select(session, Name, Email, Role)
   
   attendance_all <- bind_rows(attendance_all, clean_attendance)
 }
@@ -154,4 +154,17 @@ non_acuk_list <- non_acuk_registrants %>%
   rename(`Non-UK Institution Domains` = institution)
 
 kable(non_acuk_list, caption = "List of Non-UK Institution Domains")
+
+
+# Export emails -----------------------------------------------------------
+
+# Export unique participants with Name and Email
+unique_participants <- attendance_all %>%
+  filter(!is.na(Name), !is.na(Email)) %>%
+  mutate(First_Name = word(Name, 1)) %>%
+  distinct(First_Name, Email) %>%
+  arrange(First_Name)
+
+write_csv(unique_participants, "unique_participants.csv")
+
 
