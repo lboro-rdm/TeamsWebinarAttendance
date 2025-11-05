@@ -1,0 +1,26 @@
+---
+title: "Capturing Creativity 2025: Attendance Report"
+output:
+  word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+
+# This sources your processing script (e.g. email_cleaning.R)
+source("cc25.R")
+```
+
+```{r}
+
+kable(summary_tbl, caption = "Total Registered and Attended per Webinar")
+
+kable(registration_summary, caption = "Number of Webinars Registered per Person")
+
+kable(ac_summary, caption = "Count of Academic vs Non-Academic Emails")
+
+kable(domain_summary, caption = "Unique Registrations by Email Domain")
+
+```

@@ -1,5 +1,6 @@
 library(tidyverse)
 library(janitor)
+library(knitr)
 
 # ---- Locate all CSVs ----
 files <- list.files("CC25", pattern = "\\.csv$", full.names = TRUE)
@@ -32,7 +33,9 @@ summary_tbl <- all_data %>%
   ) %>%
   arrange(file_date)
 
-summary_tbl
+# Render kable
+summary_tbl %>%
+  kable(caption = "Total Registered and Attended per Webinar")
 
 # ---- Registration counts per email ----
 registration_summary <- all_data %>%
@@ -41,7 +44,8 @@ registration_summary <- all_data %>%
   count(webinars_registered, name = "num_people") %>%
   arrange(desc(webinars_registered))
 
-registration_summary
+registration_summary %>%
+  kable(caption = "Number of Webinars Registered per Person")
 
 # ---- Extract domain from registration_email ----
 domain_summary <- all_data %>%
@@ -54,7 +58,8 @@ domain_summary <- all_data %>%
   count(domain, name = "num_people") %>%
   arrange(desc(num_people))
 
-domain_summary
+domain_summary %>%
+  kable(caption = "Unique Registrations by Email Domain")
 
 
 # ---- Get unique emails with domain ----
@@ -68,6 +73,5 @@ unique_domains <- all_data %>%
 ac_summary <- unique_domains %>%
   count(ac_uk, name = "num_people")
 
-ac_summary
-
-write_csv(domain_summary, file.path("domain_counts.csv"))
+ac_summary %>%
+  kable(caption = "Count of Academic vs Non-Academic Emails")
