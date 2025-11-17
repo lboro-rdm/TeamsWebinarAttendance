@@ -9,19 +9,27 @@ files <- list.files("CC25", pattern = "\\.csv$", full.names = TRUE)
 all_data <- map_dfr(files, ~{
   df <- read_csv(.x, show_col_types = FALSE) %>% clean_names()
   
-  # extract date from file name
-  dd_mm <- str_remove(basename(.x), "\\.csv$")
-  file_date <- dmy(paste0(dd_mm, "-", year(Sys.Date())))
+  mm_dd_yy <- str_remove(basename(.x), "\\.csv$")
+  file_date <- mdy(mm_dd_yy)   # <-- correct parser
   
-  # Add file_date and webinar name
   df %>%
     mutate(
       file_date = file_date,
-      webinar = dd_mm,
+      webinar = mm_dd_yy,
       registered_flag = if_else(registration_status == "Registered", 1L, 0L),
       attendance_flag = if_else(role == "Attendee", 1L, 0L)
     )
 })
+
+
+# ---- Create CSV of unique registration_email ----
+unique_emails <- all_data %>%
+  filter(!is.na(registration_email) & registration_email != "") %>%
+  distinct(registration_email) %>%
+  arrange(registration_email)
+
+# Write to CSV
+write_csv(unique_emails, "CC25_unique_registration_emails.csv")
 
 # ---- Summary table: total registered and attended per file ----
 summary_tbl <- all_data %>%
